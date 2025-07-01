@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Select Booking
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Select a Booking</h2>
+        <form method="POST" action="{{ url_for('select_booking') }}">
+            <div class="form-group">
+                <label for="booking_id">Enter Booking ID:</label>
+                <input type="text" class="form-control" id="booking_id" name="booking_id" placeholder="Enter Booking ID" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Select Booking</button>
+        </form>
+
+        {% if message %}
+            <div class="alert alert-info mt-3">
+                {{ message }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

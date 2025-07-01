@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Track Logistics</h2>
+<table>
+    <thead>
+        <tr>
+            <th>District</th>
+            <th>Plastic Type</th>
+            <th>Shipment ID</th>
+            <th>ETA</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for logistics in logistics %}
+            <tr>
+                <td>{{ logistics.district }}</td>
+                <td>{{ logistics.plastic_type }}</td>
+                <td>{{ logistics.shipment_id }}</td>
+                <td>{{ logistics.eta }}</td>
+                <td>{{ logistics.status }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

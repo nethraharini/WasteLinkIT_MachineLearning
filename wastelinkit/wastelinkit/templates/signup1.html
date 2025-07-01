@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up | WasteLinkIt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+         :root {
+            --eco-green: #27ae60;
+            --light-green: #a8e6cf;
+            --soft-green: #e0f7ec;
+            --white: #ffffff;
+            --dark: #2c3e50;
+        }
+
+
+        body {
+            background-image: url("{{ url_for('static', filename='hand.webp') }}");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: transparent !important;
+            box-shadow: none !important;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--white) !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 2px 4px rgba(103, 212, 141, 0.887);
+        }
+
+        .navbar-brand img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .nav-link {
+            color: var(--white) !important;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.8rem !important;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--light-green) !important;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--light-green);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Scrolled Navbar Style */
+        .navbar-scrolled {
+            background: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+        }
+        .navbar-scrolled .navbar-brand,
+        .navbar-scrolled .nav-link {
+            color: var(--dark) !important;
+            text-shadow: none;
+        }
+        .navbar-scrolled .nav-link:hover {
+            color: var(--eco-green) !important;
+        }
+        .navbar-scrolled .nav-link::after {
+            background-color: var(--eco-green);
+        }
+        .navbar-scrolled .navbar-toggler {
+            border-color: var(--dark) !important;
+        }
+
+
+        .signup-card {
+            background-image: url('sack.jpeg');
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgb(110, 203, 135);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .signup-form .form-control {
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--soft-green);
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .signup-form .form-control:focus {
+            border-color: var(--eco-green);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+        }
+        
+
+        .btn-signup {
+            background-color: var(--eco-green);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            transition: all 0.3s;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .login-link {
+            color: var(--eco-green);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login-link:hover {
+            color: var(--dark);
+        }
+
+        .role-label {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%2363bd86' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 12px;
+        }
+
+        .dynamic-field-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dynamic-field-group label {
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        select[multiple] {
+            height: auto;
+            min-height: 120px;
+        }
+
+        select[multiple] option {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--soft-green);
+        }
+
+        select[multiple] option:checked {
+            background-color: var(--eco-green);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='clover.png') }}" alt="Logo"/>
+        WasteLinkIt
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+             <a class="nav-link" href="{{ url_for('show_prediction_page') }}">Predictions</a>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('producer_dashboard') }}">Producer</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('buyer_dashboard') }}">Buyer</a></li>
+        </ul>
+        <div class="user-actions d-flex">
+            <a href="{{ url_for('signup') }}" class="btn btn-light btn-custom">Register</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-dark btn-custom ms-2" id="loginBtn">Login</a>
+            
+        </div>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container mt-5">
+        <div class="signup-card">
+            <h2 class="text-center mb-4" style="color: var(--white);">📝 Create Account</h2>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-warning alert-dismissible fade show">
+                        {% for message in messages %}
+                            <p class="mb-0">{{ message }}</p>
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('signup') }}" class="signup-form">
+                <!-- Common Fields -->
+                <div class="form-group">
+                    <input type="text" class="form-control" name="name" placeholder="Full Name" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="tel" class="form-control" name="phone" placeholder="Phone Number" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="role-label">I am a:</label>
+                    <select name="role" id="role" class="form-control" required>
+                        <option value="">-- Select --</option>
+                        <option value="Producer">Producer</option>
+                        <option value="Buyer">Buyer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="organization" placeholder="Organization Name">
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control" name="address" placeholder="Address (City/District, State)" required rows="3"></textarea>
+                </div>
+
+                <!-- 🏭 Producer Fields -->
+                <div id="producerFields" class="dynamic-field-group" style="display: none;">
+                    <h5 style="color: var(--white); margin-bottom: 1.5rem;">Producer Information</h5>
+                    
+                    <div class="form-group">
+                        <label>Types of Waste Produced:</label>
+                        <select name="waste_types[]" class="form-control" multiple>
+                            <option value="PET">PET</option>
+                            <option value="HDPE">HDPE</option>
+                            <option value="PVC">PVC</option>
+                            <option value="LDPE">LDPE</option>
+                            <option value="PP">PP</option>
+                            <option value="PS">PS</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" class="form-control" name="estimated_waste" placeholder="Estimated Monthly Waste (in kg or tons)" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <textarea class="form-control" name="production_facility_address" placeholder="Production Facility Address (if different)" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="license_registration_id" placeholder="License/Registration ID (optional)">
+                    </div>
+                </div>
+
+                <!-- 🛒 Buyer Fields -->
+                <div id="buyerFields" class="dynamic-field-group" style="display: none;">
+                    <h5 style="color: var(--white); margin-bottom: 1.5rem;">Buyer Information</h5>
+                    
+                    <div class="form-group">
+                        <label>Types of Waste Interested In:</label>
+                        <select name="interested_waste_types[]" class="form-control" multiple>
+                            <option value="PET">PET</option>
+                            <option value="HDPE">HDPE</option>
+                            <option value="PVC">PVC</option>
+                            <option value="LDPE">LDPE</option>
+                            <option value="PP">PP</option>
+                            <option value="PS">PS</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="preferred_quantity_range" placeholder="Preferred Quantity Range (e.g., 100–500 kg/month)">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="usage_purpose" placeholder="Usage Purpose (e.g., recycling, resale, etc.)">
+                    </div>
+        
+                </div>
+
+                <button type="submit" class="btn btn-signup mt-3">Create Account</button>
+            </form>
+
+            <p class="text-center mt-4" style="color: var(--white);">Already have an account? 
+                <a href="{{ url_for('login') }}" class="login-link">Login Here</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Scroll effect for navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Set logged in state
+        document.addEventListener('DOMContentLoaded', () => {
+            localStorage.setItem('isLoggedIn', 'true');
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userRole = localStorage.getItem('userRole');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginBtn = document.getElementById('loginBtn');
+
+    if (isLoggedIn) {
+      logoutBtn.classList.remove('d-none');
+      loginBtn.classList.add('d-none');
+      // You can also hide the register button if needed
+      document.querySelector("a[href='{{ url_for('signup') }}']").classList.add('d-none');
+    }
+
+    logoutBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userRole');
+      window.location.href = "{{ url_for('home') }}"; // Redirect to home
+    });
+  });
+
+   const roleSelect = document.getElementById('role');
+  const producerFields = document.getElementById('producerFields');
+  const buyerFields = document.getElementById('buyerFields');
+
+  function toggleFields() {
+    const selectedRole = roleSelect.value;
+    if (selectedRole === 'Producer') {
+      producerFields.style.display = 'block';
+      buyerFields.style.display = 'none';
+    } else if (selectedRole === 'Buyer') {
+      buyerFields.style.display = 'block';
+      producerFields.style.display = 'none';
+    } else {
+      producerFields.style.display = 'none';
+      buyerFields.style.display = 'none';
+    }
+  }
+
+  // Initialize on page load
+  toggleFields();
+
+  // Listen for changes
+  roleSelect.addEventListener('change', toggleFields);
+    </script>
+</body>
+</html>

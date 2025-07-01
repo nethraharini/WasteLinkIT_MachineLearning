@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My Bookings</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Plastic Type</th>
+            <th>District</th>
+            <th>Month</th>
+            <th>Waste Status</th>
+            <th>Booking Type</th>
+            <th>Quantity (tons)</th>
+            <th>Booking Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{ booking.plastic_type }}</td>
+            <td>{{ booking.district }}</td>
+            <td>{{ booking.month }}</td>
+            <td>{{ booking.waste_status }}</td>
+            <td>
+                {% if booking.booking_type == 'prebooked' %}
+                <span class="badge badge-warning">Prebooked</span>
+                {% elif booking.booking_type == 'instant-booked' %}
+                <span class="badge badge-success">Instant Booked</span>
+                {% endif %}
+            </td>
+            <td>{{ booking.quantity }} tons</td>
+            <td>{{ booking.booking_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Producer Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-light p-4">
+  <div class="container">
+    <h1 class="mb-4">Producer Dashboard</h1>
+
+    <!-- Add Estimated Availability -->
+    <h2>Add Estimated Availability</h2>
+    <form id="estimateForm" class="row g-3">
+
+      <!-- Producer Name -->
+      <div class="col-md-6">
+        <label for="producer_name" class="form-label">Producer Name</label>
+        <select class="form-select" id="producer_name" required>
+          <option selected disabled>Choose...</option>
+          <option value="ABC Plastics">ABC Plastics</option>
+          <option value="EcoGreen Industries">EcoGreen Industries</option>
+          <option value="GreenCycle Ltd">GreenCycle Ltd</option>
+        </select>
+      </div>
+
+      <!-- District -->
+      <div class="col-md-6">
+        <label for="district" class="form-label">District</label>
+        <select class="form-select" id="district" required>
+          <option selected disabled>Choose...</option>
+          <option>Ariyalur</option>
+            <option>Chengalpattu</option>
+            <option>Chennai</option>
+            <option>Coimbatore</option>
+            <option>Cuddalore</option>
+            <option>Dharmapuri</option>
+            <option>Dindigul</option>
+            <option>Erode</option>
+            <option>Kallakurichi</option>
+            <option>Kanchipuram</option>
+            <option>Kanyakumari</option>
+            <option>Karur</option>
+            <option>Krishnagiri</option>
+            <option>Madurai</option>
+            <option>Mayiladuthurai</option>
+            <option>Nagapattinam</option>
+            <option>Nagercoil</option>
+            <option>Namakkal</option>
+            <option>Nilgiris</option>
+            <option>Perambalur</option>
+            <option>Pudukkottai</option>
+            <option>Ramanathapuram</option>
+            <option>Ranipet</option>
+            <option>Salem</option>
+            <option>Sivaganga</option>
+            <option>Tenali</option>
+            <option>Thanjavur</option>
+            <option>Theni</option>
+            <option>Thiruvallur</option>
+            <option>Thiruvarur</option>
+            <option>Thoothukudi</option>
+            <option>Tiruchirappalli</option>
+            <option>Tirunelveli</option>
+            <option>Tirupathur</option>
+            <option>Tiruppur</option>
+            <option>Tiruvannamalai</option>
+            <option>Tiruvarur</option>
+            <option>Vellore</option>
+            <option>Viluppuram</option>
+            <option>Virudhunagar</option>
+
+        </select>
+      </div>
+
+      <!-- Month -->
+      <div class="col-md-4">
+        <label for="month" class="form-label">Month</label>
+        <select class="form-select" id="month" required>
+          <option selected disabled>Choose...</option>
+          <option>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
+        </select>
+      </div>
+
+      <!-- Year -->
+      <div class="col-md-4">
+        <label for="year" class="form-label">Year</label>
+        <select class="form-select" id="year" required>
+          <option selected disabled>Choose...</option>
+          <option>2024</option>
+          <option>2025</option>
+        </select>
+      </div>
+
+      <!-- Plastic Type -->
+      <div class="col-md-4">
+        <label for="plastic_type" class="form-label">Plastic Type</label>
+        <select class="form-select" id="plastic_type" required>
+          <option selected disabled>Choose...</option>
+          <option>PET</option>
+          <option>HDPE</option>
+          <option>PVC</option>
+          <option>LDPE</option>
+          <option>PP</option>
+          <option>PS</option>
+        </select>
+      </div>
+
+      <!-- Estimated Quantity -->
+      <div class="col-md-6">
+        <label for="estimated_quantity" class="form-label">Estimated Quantity (in tons)</label>
+        <input type="number" class="form-control" id="estimated_quantity" min="0" step="0.1" required>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="col-12">
+        <button type="submit" class="btn btn-success">Add Estimated Availability</button>
+      </div>
+    </form>
+
+    <hr class="my-5"/>
+
+    <!-- Confirm Actual Quantity -->
+    <h2>Confirm Actual Quantity</h2>
+    <form id="confirmForm" class="row g-3">
+
+      <!-- Producer Name -->
+      <div class="col-md-6">
+        <label for="confirm_producer_name" class="form-label">Producer Name</label>
+        <select class="form-select" id="confirm_producer_name" required>
+          <option selected disabled>Choose...</option>
+          <option value="ABC Plastics">ABC Plastics</option>
+          <option value="EcoGreen Industries">EcoGreen Industries</option>
+          <option value="GreenCycle Ltd">GreenCycle Ltd</option>
+        </select>
+      </div>
+
+      <!-- District -->
+      <div class="col-md-6">
+        <label for="confirm_district" class="form-label">District</label>
+        <select class="form-select" id="confirm_district" required>
+          <option selected disabled>Choose...</option>
+          <option>Ariyalur</option>
+            <option>Chengalpattu</option>
+            <option>Chennai</option>
+            <option>Coimbatore</option>
+            <option>Cuddalore</option>
+            <option>Dharmapuri</option>
+            <option>Dindigul</option>
+            <option>Erode</option>
+            <option>Kallakurichi</option>
+            <option>Kanchipuram</option>
+            <option>Kanyakumari</option>
+            <option>Karur</option>
+            <option>Krishnagiri</option>
+            <option>Madurai</option>
+            <option>Mayiladuthurai</option>
+            <option>Nagapattinam</option>
+            <option>Nagercoil</option>
+            <option>Namakkal</option>
+            <option>Nilgiris</option>
+            <option>Perambalur</option>
+            <option>Pudukkottai</option>
+            <option>Ramanathapuram</option>
+            <option>Ranipet</option>
+            <option>Salem</option>
+            <option>Sivaganga</option>
+            <option>Tenali</option>
+            <option>Thanjavur</option>
+            <option>Theni</option>
+            <option>Thiruvallur</option>
+            <option>Thiruvarur</option>
+            <option>Thoothukudi</option>
+            <option>Tiruchirappalli</option>
+            <option>Tirunelveli</option>
+            <option>Tirupathur</option>
+            <option>Tiruppur</option>
+            <option>Tiruvannamalai</option>
+            <option>Tiruvarur</option>
+            <option>Vellore</option>
+            <option>Viluppuram</option>
+            <option>Virudhunagar</option>
+
+        </select>
+      </div>
+
+      <!-- Month -->
+      <div class="col-md-4">
+        <label for="confirm_month" class="form-label">Month</label>
+        <select class="form-select" id="confirm_month" required>
+          <option selected disabled>Choose...</option>
+          <option>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
+        </select>
+      </div>
+
+      <!-- Year -->
+      <div class="col-md-4">
+        <label for="confirm_year" class="form-label">Year</label>
+        <select class="form-select" id="confirm_year" required>
+          <option selected disabled>Choose...</option>
+          <option>2024</option>
+          <option>2025</option>
+        </select>
+      </div>
+
+      <!-- Plastic Type -->
+      <div class="col-md-4">
+        <label for="confirm_plastic_type" class="form-label">Plastic Type</label>
+        <select class="form-select" id="confirm_plastic_type" required>
+          <option selected disabled>Choose...</option>
+          <option>PET</option>
+          <option>HDPE</option>
+          <option>PVC</option>
+          <option>LDPE</option>
+          <option>PP</option>
+          <option>PS</option>
+        </select>
+      </div>
+
+      <!-- Confirmed Quantity -->
+      <div class="col-md-6">
+        <label for="confirmed_quantity" class="form-label">Confirmed Quantity (in tons)</label>
+        <input type="number" class="form-control" id="confirmed_quantity" min="0" step="0.1" required>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Confirm Quantity</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Add Estimated Availability
+    document.getElementById("estimateForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const data = {
+        producer_name: document.getElementById("producer_name").value,
+        district: document.getElementById("district").value,
+        month: document.getElementById("month").value,
+        year: parseInt(document.getElementById("year").value),
+        plastic_type: document.getElementById("plastic_type").value,
+        estimated_quantity: parseFloat(document.getElementById("estimated_quantity").value)
+      };
+
+      const res = await fetch("/api/availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      alert(result.message || result.error);
+    });
+
+    // Confirm Actual Quantity
+    document.getElementById("confirmForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const data = {
+        producer_name: document.getElementById("confirm_producer_name").value,
+        district: document.getElementById("confirm_district").value,
+        month: document.getElementById("confirm_month").value,
+        year: parseInt(document.getElementById("confirm_year").value),
+        plastic_type: document.getElementById("confirm_plastic_type").value,
+        confirmed_quantity: parseFloat(document.getElementById("confirmed_quantity").value)
+      };
+
+      const res = await fetch("/api/availability/confirm", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      alert(result.message || result.error);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Pre-book Waste</h2>
+<form id="prebook-form">
+    <label>Select District:</label>
+    <select id="district">
+        <!-- Districts will be populated here -->
+    </select><br>
+
+    <label>Select Plastic Type:</label>
+    <select id="plastic-type">
+        <option value="PET_Tons">PET</option>
+        <option value="HDPE_Tons">HDPE</option>
+        <option value="PVC_Tons">PVC</option>
+        <option value="LDPE_Tons">LDPE</option>
+        <option value="PP_Tons">PP</option>
+        <option value="PS_Tons">PS</option>
+    </select><br>
+
+    <label>Quantity (Tons):</label>
+    <input type="number" id="quantity" min="1"><br>
+
+    <button type="submit">Submit Pre-booking</button>
+</form>
+<p id="prebooking-error" style="color: red;"></p>
+{% endblock %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Waste Listing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h3 class="mb-4">➕ Add New Waste Listing</h3>
+
+    <form method="POST" action="{{ url_for('add_listing') }}">
+        <div class="mb-3">
+            <label for="plasticType" class="form-label">Plastic Type</label>
+            <select id="plasticType" name="plastic_type" class="form-select" required>
+                <option value="">-- Select --</option>
+                <option value="PET">PET</option>
+                <option value="HDPE">HDPE</option>
+                <option value="PVC">PVC</option>
+                <option value="LDPE">LDPE</option>
+                <option value="PP">PP</option>
+                <option value="PS">PS</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity (in Tons)</label>
+            <input type="number" step="0.1" min="0" name="quantity" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="availableFrom" class="form-label">Available From</label>
+            <input type="date" name="available_from" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit Listing</button>
+        <a href="{{ url_for('producer_dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+
+</body>
+</html>

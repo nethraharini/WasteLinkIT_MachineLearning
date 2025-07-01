@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">List Your Confirmed Plastic Waste</h2>
+
+    <form method="POST">
+        <!-- Select Estimated Waste Entry -->
+        <div class="mb-3">
+            <label for="estimate_id" class="form-label">Select Estimated Entry:</label>
+            <select name="estimate_id" id="estimate_id" class="form-select" required>
+                <option value="">Select one</option>
+                {% for estimate in estimates %}
+                    <option value="{{ estimate._id }}">{{ estimate.plastic_type }} - {{ estimate.quantity }} tons in {{ estimate.district }} ({{ estimate.month }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="plasticType" class="form-label">Plastic Type:</label>
+            <select name="plastic_type" id="plasticType" class="form-select" required>
+                <option value="PET">PET</option>
+                <option value="HDPE">HDPE</option>
+                <option value="PVC">PVC</option>
+                <option value="LDPE">LDPE</option>
+                <option value="PP">PP</option>
+                <option value="PS">PS</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity (kg):</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="district" class="form-label">District:</label>
+            <select name="district" id="district" class="form-select" required>
+                <option value="Ariyalur">Ariyalur</option>
+                <option value="Chengalpattu">Chengalpattu</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Coimbatore">Coimbatore</option>
+                <option value="Cuddalore">Cuddalore</option>
+                <option value="Dharmapuri">Dharmapuri</option>
+                <option value="Dindigul">Dindigul</option>
+                <option value="Erode">Erode</option>
+                <option value="Kallakurichi">Kallakurichi</option>
+                <option value="Kanchipuram">Kanchipuram</option>
+                <option value="Kanyakumari">Kanyakumari</option>
+                <option value="Karur">Karur</option>
+                <option value="Krishnagiri">Krishnagiri</option>
+                <option value="Madurai">Madurai</option>
+                <option value="Mayiladuthurai">Mayiladuthurai</option>
+                <option value="Nagapattinam">Nagapattinam</option>
+                <option value="Nagercoil">Nagercoil</option>
+                <option value="Namakkal">Namakkal</option>
+                <option value="Nilgiris">Nilgiris</option>
+                <option value="Perambalur">Perambalur</option>
+                <option value="Pudukkottai">Pudukkottai</option>
+                <option value="Ramanathapuram">Ramanathapuram</option>
+                <option value="Ranipet">Ranipet</option>
+                <option value="Salem">Salem</option>
+                <option value="Sivaganga">Sivaganga</option>
+                <option value="Tenali">Tenali</option>
+                <option value="Thanjavur">Thanjavur</option>
+                <option value="Theni">Theni</option>
+                <option value="Thiruvallur">Thiruvallur</option>
+                <option value="Thiruvarur">Thiruvarur</option>
+                <option value="Thoothukudi">Thoothukudi</option>
+                <option value="Tiruchirappalli">Tiruchirappalli</option>
+                <option value="Tirunelveli">Tirunelveli</option>
+                <option value="Tirupathur">Tirupathur</option>
+                <option value="Tiruppur">Tiruppur</option>
+                <option value="Tiruvannamalai">Tiruvannamalai</option>
+                <option value="Tiruvarur">Tiruvarur</option>
+                <option value="Vellore">Vellore</option>
+                <option value="Viluppuram">Viluppuram</option>
+                <option value="Virudhunagar">Virudhunagar</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="month" class="form-label">Month (YYYY-MM):</label>
+            <input type="month" name="month" id="month" class="form-control" required>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit Confirmed Waste</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

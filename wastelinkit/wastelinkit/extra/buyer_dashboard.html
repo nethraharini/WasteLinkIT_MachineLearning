@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Welcome, {{ session['email'] }} (Buyer)</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-6 text-center">
+            <a href="/buyer/prebook" class="btn btn-info btn-lg">🔮 Pre-Book Waste</a>
+        </div>
+        <div class="col-md-6 text-center">
+            <a href="/buyer/instant-book" class="btn btn-warning btn-lg">⚡ Instant Book Waste</a>
+        </div>
+        <div class="col-md-12 text-center">
+            <a href="/buyer/my-bookings" class="btn btn-primary btn-lg">📑 View My Bookings</a>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <h3 class="text-center">My Bookings</h3>
+
+    {% if bookings %}
+    <div class="table-responsive mt-3">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Plastic Type</th>
+                    <th>Month</th>
+                    <th>Quantity</th>
+                    <th>Pickup Address</th>
+                    <th>Delivery Address</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.plastic_type }}</td>
+                    <td>{{ booking.month }}</td>
+                    <td>{{ booking.quantity }} tons</td>
+                    <td>{{ booking.logistics.pickup_address if booking.logistics }}</td>
+                    <td>{{ booking.logistics.delivery_address if booking.logistics }}</td>
+                    <td>
+                        {% if booking.logistics %}
+                            {{ booking.logistics.status }}
+                        {% else %}
+                            Not Updated
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="text-center text-muted mt-3">No bookings found yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

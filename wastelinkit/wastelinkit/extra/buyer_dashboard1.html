@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buyer Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    select, input { margin: 5px; }
+    table { margin-top: 10px; width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px; border: 1px solid #aaa; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Buyer Dashboard</h1>
+
+  <!-- Pre-Booking Form -->
+  <section>
+    <h2>Pre-Book Plastic Waste</h2>
+    <form id="prebookForm">
+      <input type="text" id="buyer_name" placeholder="Buyer Name" required>
+      <select id="district" required>
+        <option value="">--District--</option>
+        <option>Ariyalur</option>
+            <option>Chengalpattu</option>
+            <option>Chennai</option>
+            <option>Coimbatore</option>
+            <option>Cuddalore</option>
+            <option>Dharmapuri</option>
+            <option>Dindigul</option>
+            <option>Erode</option>
+            <option>Kallakurichi</option>
+            <option>Kanchipuram</option>
+            <option>Kanyakumari</option>
+            <option>Karur</option>
+            <option>Krishnagiri</option>
+            <option>Madurai</option>
+            <option>Mayiladuthurai</option>
+            <option>Nagapattinam</option>
+            <option>Nagercoil</option>
+            <option>Namakkal</option>
+            <option>Nilgiris</option>
+            <option>Perambalur</option>
+            <option>Pudukkottai</option>
+            <option>Ramanathapuram</option>
+            <option>Ranipet</option>
+            <option>Salem</option>
+            <option>Sivaganga</option>
+            <option>Tenali</option>
+            <option>Thanjavur</option>
+            <option>Theni</option>
+            <option>Thiruvallur</option>
+            <option>Thiruvarur</option>
+            <option>Thoothukudi</option>
+            <option>Tiruchirappalli</option>
+            <option>Tirunelveli</option>
+            <option>Tirupathur</option>
+            <option>Tiruppur</option>
+            <option>Tiruvannamalai</option>
+            <option>Tiruvarur</option>
+            <option>Vellore</option>
+            <option>Viluppuram</option>
+            <option>Virudhunagar</option>
+
+      </select>
+      <select id="month" required>
+        <option value="">--Month--</option>
+        <option>January</option>
+          <option>February</option>
+          <option>March</option>
+          <option>April</option>
+          <option>May</option>
+          <option>June</option>
+          <option>July</option>
+          <option>August</option>
+          <option>September</option>
+          <option>October</option>
+          <option>November</option>
+          <option>December</option>
+
+      </select>
+      <select id="year" required>
+        <option value="">--Year--</option>
+        <option>2025</option>
+        <option>2026</option>
+      </select>
+      <select id="plastic_type" required>
+        <option value="">--Plastic Type--</option>
+        <option>PET</option>
+          <option>HDPE</option>
+          <option>PVC</option>
+          <option>LDPE</option>
+          <option>PP</option>
+          <option>PS</option>
+      </select>
+      <input type="number" id="quantity" placeholder="Quantity (kg)" required>
+      <button type="submit">Pre-Book</button>
+    </form>
+    <p id="prebookMessage"></p>
+  </section>
+
+  <!-- Availability Filter -->
+  <section>
+    <h2>Confirmed Available Waste</h2>
+    <label>Filter by District:</label>
+    <select id="filterDistrict">
+      <option value="">All</option>
+      <option>Ariyalur</option>
+            <option>Chengalpattu</option>
+            <option>Chennai</option>
+            <option>Coimbatore</option>
+            <option>Cuddalore</option>
+            <option>Dharmapuri</option>
+            <option>Dindigul</option>
+            <option>Erode</option>
+            <option>Kallakurichi</option>
+            <option>Kanchipuram</option>
+            <option>Kanyakumari</option>
+            <option>Karur</option>
+            <option>Krishnagiri</option>
+            <option>Madurai</option>
+            <option>Mayiladuthurai</option>
+            <option>Nagapattinam</option>
+            <option>Nagercoil</option>
+            <option>Namakkal</option>
+            <option>Nilgiris</option>
+            <option>Perambalur</option>
+            <option>Pudukkottai</option>
+            <option>Ramanathapuram</option>
+            <option>Ranipet</option>
+            <option>Salem</option>
+            <option>Sivaganga</option>
+            <option>Tenali</option>
+            <option>Thanjavur</option>
+            <option>Theni</option>
+            <option>Thiruvallur</option>
+            <option>Thiruvarur</option>
+            <option>Thoothukudi</option>
+            <option>Tiruchirappalli</option>
+            <option>Tirunelveli</option>
+            <option>Tirupathur</option>
+            <option>Tiruppur</option>
+            <option>Tiruvannamalai</option>
+            <option>Tiruvarur</option>
+            <option>Vellore</option>
+            <option>Viluppuram</option>
+            <option>Virudhunagar</option>
+
+      
+    </select>
+    <label>Plastic Type:</label>
+    <select id="filterPlastic">
+      <option value="">All</option>
+      <option>PET</option>
+          <option>HDPE</option>
+          <option>PVC</option>
+          <option>LDPE</option>
+          <option>PP</option>
+          <option>PS</option>
+    </select>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Producer</th><th>District</th><th>Month</th><th>Year</th><th>Plastic</th><th>Quantity (kg)</th>
+        </tr>
+      </thead>
+      <tbody id="availabilityTableBody"></tbody>
+    </table>
+  </section>
+
+  <!-- Predicted Waste Table -->
+  <input type="text" id="searchInput" placeholder="Search by district, month, or plastic quantity" class="form-control mb-3" />
+
+
+  <section>
+    <h2>Predicted Plastic Waste (Planning)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>District</th><th>Month</th><th>PET_Tons</th><th>HDPE_Tons</th><th>PVC_Tons</th><th>LDPE_Tons</th><th>PP_Tons</th><th>PS_Tons</th>
+        </tr>
+      </thead>
+      <tbody id="predictionTableBody"></tbody>
+    </table>
+  </section>
+
+  <!-- Buyer’s Booking Records -->
+  <section>
+    <h2>Your Bookings</h2>
+    <button onclick="loadBookings()">Load My Bookings</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Buyer</th><th>District</th><th>Month</th><th>Year</th><th>Plastic</th><th>Quantity</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="bookingsTableBody"></tbody>
+    </table>
+  </section>
+
+  <script>
+    let availabilityData = [];
+
+    // Load confirmed waste availability
+    fetch("/api/available-waste")
+      .then(res => res.json())
+      .then(data => {
+        availabilityData = data;
+        renderAvailabilityTable();
+      });
+
+    // Render filtered table
+    function renderAvailabilityTable() {
+      const district = document.getElementById("filterDistrict").value;
+      const plastic = document.getElementById("filterPlastic").value;
+      const tbody = document.getElementById("availabilityTableBody");
+      tbody.innerHTML = "";
+
+      const filtered = availabilityData.filter(row =>
+        (!district || row.district === district) &&
+        (!plastic || row.plastic_type === plastic)
+      );
+
+      filtered.forEach(entry => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${entry.producer_name}</td>
+            <td>${entry.district}</td>
+            <td>${entry.month}</td>
+            <td>${entry.year}</td>
+            <td>${entry.plastic_type}</td>
+            <td>${entry.confirmed_quantity}</td>
+          </tr>`;
+      });
+    }
+
+    document.getElementById("filterDistrict").addEventListener("change", renderAvailabilityTable);
+    document.getElementById("filterPlastic").addEventListener("change", renderAvailabilityTable);
+
+    // Load predictions
+fetch("/api/predictions")
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.getElementById("predictionTableBody");
+    tbody.innerHTML = ""; // Clear existing rows before appending
+    data.forEach(pred => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${pred.District}</td>
+          <td>${pred.Month}</td>
+          <td>${pred.PET_Tons}</td>
+          <td>${pred.HDPE_Tons}</td>
+          <td>${pred.PVC_Tons}</td>
+          <td>${pred.LDPE_Tons}</td>
+          <td>${pred.PP_Tons}</td>
+          <td>${pred.PS_Tons}</td>
+        </tr>`;
+    });
+  });
+
+// Filter functionality
+document.getElementById("searchInput").addEventListener("keyup", function () {
+  const query = this.value.toLowerCase();
+  const rows = document.querySelectorAll("#predictionTableBody tr");
+
+  rows.forEach(row => {
+    const cells = row.querySelectorAll("td");
+    const district = cells[0].textContent.toLowerCase();
+    const month = cells[1].textContent.toLowerCase();
+    const PET = cells[2].textContent.toLowerCase();
+    const HDPE = cells[3].textContent.toLowerCase();
+    const PVC = cells[4].textContent.toLowerCase();
+    const LDPE = cells[5].textContent.toLowerCase();
+    const PP = cells[6].textContent.toLowerCase();
+    const PS = cells[7].textContent.toLowerCase();
+
+    if (
+      district.includes(query) ||
+      month.includes(query) ||
+      PET.includes(query) ||
+      HDPE.includes(query) ||
+      PVC.includes(query) ||
+      LDPE.includes(query) ||
+      PP.includes(query) ||
+      PS.includes(query)
+    ) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+});
+
+
+    // Handle pre-book form
+    document.getElementById("prebookForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const payload = {
+        buyer_name: document.getElementById("buyer_name").value,
+        district: document.getElementById("district").value,
+        month: document.getElementById("month").value,
+        year: parseInt(document.getElementById("year").value),
+        plastic_type: document.getElementById("plastic_type").value,
+        quantity: parseFloat(document.getElementById("quantity").value)
+      };
+
+      fetch("/api/prebook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("prebookMessage").innerText = data.message || data.error;
+        });
+    });
+
+    // Load bookings
+    function loadBookings() {
+      const buyerName = document.getElementById("buyer_name").value;
+      if (!buyerName) {
+        alert("Enter your name above before loading bookings.");
+        return;
+      }
+
+      fetch(`/api/bookings?buyer=${buyerName}`)
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById("bookingsTableBody");
+          tbody.innerHTML = "";
+          data.forEach(entry => {
+            tbody.innerHTML += `
+              <tr>
+                <td>${entry.buyer_name}</td>
+                <td>${entry.district}</td>
+                <td>${entry.month}</td>
+                <td>${entry.year}</td>
+                <td>${entry.plastic_type}</td>
+                <td>${entry.quantity}</td>
+                <td>${entry.status}</td>
+              </tr>`;
+          });
+        });
+    }
+  </script>
+</body>
+</html>

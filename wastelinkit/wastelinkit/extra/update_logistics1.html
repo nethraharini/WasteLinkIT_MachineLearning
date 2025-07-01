@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Update Logistics for Confirmed Bookings</h2>
+
+    <form id="logisticsForm">
+        <div class="form-group">
+            <label for="booking_id">Select Booking:</label>
+            <select class="form-control" id="booking_id" name="booking_id" required>
+                {% for booking in instant_bookings %}
+                    <option value="{{ booking['_id'] }}|instant">
+                        [Instant] {{ booking['waste_type'] }} | Qty: {{ booking['quantity'] }} | Buyer: {{ booking['buyer_id'] }}
+                    </option>
+                {% endfor %}
+                {% for booking in confirmed_prebookings %}
+                    <option value="{{ booking['_id'] }}|prebook">
+                        [Prebooked] {{ booking['waste_type'] }} | Qty: {{ booking['quantity'] }} | Buyer: {{ booking['buyer_id'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="pickup_address">Pickup Address:</label>
+            <input type="text" class="form-control" name="pickup_address" required>
+        </div>
+
+        <div class="form-group">
+            <label for="delivery_address">Delivery Address:</label>
+            <input type="text" class="form-control" name="delivery_address" required>
+        </div>
+
+        <div class="form-group">
+            <label for="pickup_date">Pickup Date:</label>
+            <input type="date" class="form-control" name="pickup_date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Logistics Status:</label>
+            <select class="form-control" name="status" required>
+                <option value="pending">Pending</option>
+                <option value="in_transit">In Transit</option>
+                <option value="delivered">Delivered</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Logistics</button>
+    </form>
+
+    <div id="responseMessage" class="mt-3"></div>
+</div>
+
+<script>
+    document.getElementById("logisticsForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const selected = form.booking_id.value.split("|");
+        const booking_id = selected[0];
+        const booking_type = selected[1];
+
+        const logistics = {
+            pickup_address: form.pickup_address.value,
+            delivery_address: form.delivery_address.value,
+            pickup_date: form.pickup_date.value,
+            status: form.status.value
+        };
+
+        const response = await fetch("/producer/update_logistics", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                booking_id,
+                booking_type,
+                logistics
+            })
+        });
+
+        const result = await response.json();
+        document.getElementById("responseMessage").innerText = result.message || result.error;
+    });
+</script>
+{% endblock %}

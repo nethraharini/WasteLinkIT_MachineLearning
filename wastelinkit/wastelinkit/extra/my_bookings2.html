@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My Bookings</h2>
+<table>
+    <thead>
+        <tr>
+            <th>District</th>
+            <th>Plastic Type</th>
+            <th>Quantity (Tons)</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.district }}</td>
+                <td>{{ booking.plastic_type }}</td>
+                <td>{{ booking.quantity }}</td>
+                <td>{{ booking.status }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

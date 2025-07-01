@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Welcome Producer: {{ email }}</h2>
+    <p class="text-center">You can now list your plastic waste, update quantities, and track buyer bookings.</p>
+
+    <div class="row mt-4">
+        <div class="col-md-6 text-center">
+            <a href="/producer/list_estimated_waste" class="btn btn-primary btn-lg">List Estimated Waste</a>
+        </div>
+        <div class="col-md-6 text-center">
+            <a href="/producer/list_confirmed_waste" class="btn btn-success btn-lg">List Confirmed Waste</a>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <a href="/producer/update_logistics" class="btn btn-warning btn-lg">Update Logistics Info</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Booking Details
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Booking Details</h2>
+
+        {% if booking %}
+            <div class="card">
+                <div class="card-header">
+                    Booking ID: {{ booking['_id'] }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Status: {{ booking['status'] }}</h5>
+                    <p class="card-text">Quantity: {{ booking['quantity'] }}</p>
+                    <p class="card-text">Note: {{ booking['note'] }}</p>
+                </div>
+            </div>
+        {% else %}
+            <p>No booking found.</p>
+        {% endif %}
+        
+        <a href="{{ url_for('select_booking') }}" class="btn btn-secondary mt-3">Back to Select Booking</a>
+    </div>
+{% endblock %}

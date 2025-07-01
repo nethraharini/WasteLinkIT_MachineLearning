@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Buyer Dashboard</h1>
+
+        <!-- Profile Section -->
+        <section id="profile-section">
+            <h2>Profile</h2>
+            <div id="profile-display">
+                <p><strong>Name:</strong> <span id="profile-name"></span></p>
+                <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                <p><strong>Phone:</strong> <span id="profile-phone"></span></p>
+                <p><strong>Organization:</strong> <span id="profile-organization"></span></p>
+                <p><strong>Address:</strong> <span id="profile-address"></span></p>
+                <button id="edit-profile-button">Edit Profile</button>
+            </div>
+
+            <div id="profile-edit-form" style="display: none;">
+                <label>Name: <input type="text" id="edit-name"></label><br>
+                <label>Email: <input type="email" id="edit-email"></label><br>
+                <label>Phone: <input type="text" id="edit-phone"></label><br>
+                <label>Organization: <input type="text" id="edit-organization"></label><br>
+                <label>Address: <input type="text" id="edit-address"></label><br>
+                <button id="save-profile-button">Save</button>
+                <button id="cancel-edit-button">Cancel</button>
+            </div>
+
+            <!-- Add buttons below the profile section -->
+    <div id="buyer-actions">
+        <button id="prebook-button">Pre-book Waste</button>
+        <button id="instant-book-button">Instant Book</button>
+        <button id="my-bookings-button">My Bookings</button>
+        <button id="track-logistics-button">Track Logistics</button>
+    </div>
+        </section>
+
+        <!-- Pre-booking Section -->
+        <section id="prebooking-section">
+            <h2>Pre-book Waste</h2>
+            <label for="district">Select District:</label>
+            <select id="district"></select><br>
+
+            <label for="plastic-type">Select Plastic Type:</label>
+            <select id="plastic-type">
+                <option value="PET_Tons">PET</option>
+                <option value="HDPE_Tons">HDPE</option>
+                <option value="PVC_Tons">PVC</option>
+                <option value="LDPE_Tons">LDPE</option>
+                <option value="PP_Tons">PP</option>
+                <option value="PS_Tons">PS</option>
+            </select><br>
+
+            <label for="quantity">Quantity (Tons):</label>
+            <input type="number" id="quantity" min="1"><br>
+
+            <button id="prebook-button">Submit Pre-booking</button>
+            <p id="prebooking-error" style="color: red;"></p>
+        </section>
+
+        <!-- Instant Booking Section -->
+        <section id="instant-booking-section">
+            <h2>Instant Booking</h2>
+            <div id="instant-booking-list"></div>
+        </section>
+
+    </div>
+
+    <script>
+        // Fetch profile data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProfile();
+            fetchPredictions();
+            fetchConfirmedWaste();
+        });
+
+        // Fetch Profile from backend
+        function fetchProfile() {
+            fetch('/api/profile')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('profile-name').innerText = data.name;
+                    document.getElementById('profile-email').innerText = data.email;
+                    document.getElementById('profile-phone').innerText = data.phone;
+                    document.getElementById('profile-organization').innerText = data.organization;
+                    document.getElementById('profile-address').innerText = data.address;
+                })
+                .catch(err => console.error('Error fetching profile:', err));
+        }
+
+        // Edit profile functionality
+        document.getElementById('edit-profile-button').addEventListener('click', () => {
+            document.getElementById('profile-display').style.display = 'none';
+            document.getElementById('profile-edit-form').style.display = 'block';
+            const name = document.getElementById('profile-name').innerText;
+            const email = document.getElementById('profile-email').innerText;
+            const phone = document.getElementById('profile-phone').innerText;
+            const organization = document.getElementById('profile-organization').innerText;
+            const address = document.getElementById('profile-address').innerText;
+
+            // Pre-fill form fields
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-email').value = email;
+            document.getElementById('edit-phone').value = phone;
+            document.getElementById('edit-organization').value = organization;
+            document.getElementById('edit-address').value = address;
+        });
+
+        // Save profile after editing
+        document.getElementById('save-profile-button').addEventListener('click', () => {
+            const updatedProfile = {
+                name: document.getElementById('edit-name').value,
+                email: document.getElementById('edit-email').value,
+                phone: document.getElementById('edit-phone').value,
+                organization: document.getElementById('edit-organization').value,
+                address: document.getElementById('edit-address').value,
+            };
+
+            fetch('/api/update-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedProfile)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Profile updated successfully!');
+                // Hide edit form and show the updated profile display
+                document.getElementById('profile-display').style.display = 'block';
+                document.getElementById('profile-edit-form').style.display = 'none';
+            })
+            .catch(err => console.error('Error saving profile:', err));
+        });
+
+        // Cancel editing profile
+        document.getElementById('cancel-edit-button').addEventListener('click', () => {
+            document.getElementById('profile-display').style.display = 'block';
+            document.getElementById('profile-edit-form').style.display = 'none';
+        });
+
+        // Fetch Predictions (District, Plastic Type, etc.)
+        function fetchPredictions() {
+            fetch('/api/predictions')
+                .then(response => response.json())
+                .then(data => {
+                    const districtSelect = document.getElementById('district');
+                    data.forEach(prediction => {
+                        const option = document.createElement('option');
+                        option.value = prediction.District;
+                        option.textContent = prediction.District;
+                        districtSelect.appendChild(option);
+                    });
+                })
+                .catch(err => console.error('Error fetching predictions:', err));
+        }
+
+        // Handle Pre-booking
+        document.getElementById('prebook-button').addEventListener('click', () => {
+            const district = document.getElementById('district').value;
+            const plasticType = document.getElementById('plastic-type').value;
+            const quantity = document.getElementById('quantity').value;
+
+            if (!district || !plasticType || !quantity) {
+                document.getElementById('prebooking-error').innerText = 'All fields are required!';
+                return;
+            }
+
+            const bookingData = {
+                district,
+                plasticType,
+                quantity,
+                bookingType: 'prebooking',
+                status: 'pending',
+            };
+
+            fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Pre-booking successful!');
+            })
+            .catch(err => console.error('Error submitting pre-booking:', err));
+        });
+
+        // Fetch Confirmed Waste for Instant Booking
+        function fetchConfirmedWaste() {
+            fetch('/api/confirmed_waste')
+                .then(response => response.json())
+                .then(data => {
+                    const instantBookingList = document.getElementById('instant-booking-list');
+                    data.forEach(waste => {
+                        const div = document.createElement('div');
+                        div.innerHTML = `
+                            <p>${waste.district} - ${waste.plasticType} - ${waste.quantity} tons</p>
+                            <button onclick="instantBooking(${waste.id})">Book Now</button>
+                        `;
+                        instantBookingList.appendChild(div);
+                    });
+                })
+                .catch(err => console.error('Error fetching confirmed waste:', err));
+        }
+
+        // Handle Instant Booking
+        function instantBooking(id) {
+            fetch(`/api/instant_booking/${id}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Instant booking successful!');
+            })
+            .catch(err => console.error('Error submitting instant booking:', err));
+        }
+    </script>
+</body>
+</html>

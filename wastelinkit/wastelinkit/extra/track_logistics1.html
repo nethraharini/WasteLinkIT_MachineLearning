@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Track Logistics</h2>
+
+{% if logistics_list %}
+  {% for item in logistics_list %}
+    <div>
+      <p><strong>Waste Type:</strong> {{ item.waste_type }}</p>
+      <p><strong>Quantity:</strong> {{ item.quantity }} kg</p>
+      <p><strong>Transporter:</strong> {{ item.transporter }}</p>
+      <p><strong>Vehicle No:</strong> {{ item.vehicle_no }}</p>
+      <p><strong>Dispatch Date:</strong> {{ item.dispatch_date }}</p>
+      <p><strong>Status:</strong> {{ item.status }}</p>
+
+      <h4>Tracking Updates:</h4>
+      <ul>
+        {% for update in item.tracking_updates %}
+          <li>{{ update.time }} - {{ update.note }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <hr>
+  {% endfor %}
+{% else %}
+  <p>No logistics info found for your bookings.</p>
+{% endif %}
+{% endblock %}

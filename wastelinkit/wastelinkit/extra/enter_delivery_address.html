@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Enter or Update Delivery Address</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="plastic_type" class="form-label">Plastic Type:</label>
+            <input type="text" class="form-control" value="{{ booking.plastic_type }}" readonly>
+        </div>
+
+        <div class="mb-3">
+            <label for="confirmed_quantity" class="form-label">Quantity (tons):</label>
+            <input type="text" class="form-control" value="{{ booking.confirmed_quantity }}" readonly>
+        </div>
+
+        <div class="mb-3">
+            <label for="delivery_address" class="form-label">Delivery Address:</label>
+            <input type="text" class="form-control" name="delivery_address" id="delivery_address" value="{{ booking.delivery_address or '' }}" required>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit Delivery Address</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Fill Logistics</h2>
+
+<form method="POST" action="/fill_logistics">
+  <label>Buyer ID:</label>
+  <input type="text" name="buyer_id" required><br>
+
+  <label>Waste Type:</label>
+  <input type="text" name="waste_type" required><br>
+
+  <label>Quantity (kg):</label>
+  <input type="number" name="quantity" required><br>
+
+  <label>Transporter:</label>
+  <input type="text" name="transporter" required><br>
+
+  <label>Vehicle No:</label>
+  <input type="text" name="vehicle_no" required><br>
+
+  <label>Dispatch Date:</label>
+  <input type="date" name="dispatch_date" required><br>
+
+  <label>Status:</label>
+  <select name="status" required>
+    <option>Dispatched</option>
+    <option>In Transit</option>
+    <option>Delivered</option>
+  </select><br>
+
+  <button type="submit">Submit Logistics</button>
+</form>
+
+<hr>
+
+<h3>Update Existing Logistics</h3>
+{% for logistics in logistics_list %}
+  <div>
+    <p><strong>ID:</strong> {{ logistics._id }}</p>
+    <p><strong>Buyer ID:</strong> {{ logistics.buyer_id }}</p>
+    <p><strong>Status:</strong> {{ logistics.status }}</p>
+    <form method="POST" action="/update_tracking/{{ logistics._id }}">
+      <input type="text" name="note" placeholder="Tracking Note" required>
+      <select name="status">
+        <option>In Transit</option>
+        <option>Delivered</option>
+      </select>
+      <button type="submit">Update</button>
+    </form>
+  </div>
+  <hr>
+{% endfor %}
+{% endblock %}

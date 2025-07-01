@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plastic Waste Predictions | WasteLinkIt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        :root {
+            --eco-green: #63bd86;
+            --light-green: #a8e6cf;
+            --soft-green: #e0f7ec;
+            --white: #ffffff;
+            --dark: #000000;
+        }
+
+        body {
+            background-image: url("{{ url_for('static', filename='hand.webp') }}");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: transparent !important;
+            box-shadow: none !important;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--white) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(103, 212, 141, 0.887);
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-link {
+            color: var(--white) !important;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-link:hover {
+            color: var(--light-green) !important;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--light-green);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-scrolled {
+            background: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+        }
+        .navbar-scrolled .navbar-brand,
+        .navbar-scrolled .nav-link {
+            color: var(--dark) !important;
+            text-shadow: none;
+        }
+        .navbar-scrolled .nav-link:hover {
+            color: var(--eco-green) !important;
+        }
+
+        /* Prediction Card */
+        .prediction-card {
+            background-image: url('sack.jpeg');
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            margin: 2rem auto;
+        }
+
+        /* Form Elements */
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--soft-green);
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--eco-green);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 2rem 0;
+        }
+
+        /* Table Styling */
+        #predictionsTable {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #predictionsTable thead {
+            background-color: var(--eco-green);
+            color: white;
+        }
+
+        /* Buttons */
+        .btn-custom {
+            border-radius: 25px;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(39, 174, 96, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='clover.png') }}" alt="Logo"/>
+                WasteLinkIt
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <a class="nav-link" href="{{ url_for('show_prediction_page') }}">Predictions</a>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('producer_dashboard') }}">Producer</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('buyer_dashboard') }}">Buyer</a></li>
+                </ul>
+                <div class="user-actions d-flex">
+                    <a href="{{ url_for('signup') }}" class="btn btn-light btn-custom">Register</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-dark btn-custom ms-2" id="loginBtn">Login</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-custom ms-2 d-none" id="logoutBtn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="prediction-card">
+            <h2 class="text-center mb-4">🔍 Plastic Waste Prediction (Jan–June 2025)</h2>
+
+            <!-- Filters -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <label for="districtSelect" class="form-label">Select District</label>
+                    <select id="districtSelect" class="form-select">
+                        <option value="" disabled selected>-- Choose District --</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="plasticTypeSelect" class="form-label">Select Plastic Type</label>
+                    <select id="plasticTypeSelect" class="form-select">
+                        <option value="PET_Tons">PET</option>
+                        <option value="HDPE_Tons">HDPE</option>
+                        <option value="PVC_Tons">PVC</option>
+                        <option value="LDPE_Tons">LDPE</option>
+                        <option value="PP_Tons">PP</option>
+                        <option value="PS_Tons">PS</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="chart-container">
+                <canvas id="plasticChart" height="100"></canvas>
+            </div>
+
+            <!-- Table -->
+            <h4 class="mt-4">📋 All Predictions Table</h4>
+            <table id="predictionsTable" class="display table table-hover mt-3" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>District</th>
+                        <th>PET</th>
+                        <th>HDPE</th>
+                        <th>PVC</th>
+                        <th>LDPE</th>
+                        <th>PP</th>
+                        <th>PS</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <!-- Navigation Buttons -->
+            <div class="row mt-4 g-3">
+                <div class="col-md-6 text-center">
+                    <button class="btn btn-custom btn-success" onclick="window.location.href='/producer_dashboard'">
+                        <i class="fas fa-recycle me-2"></i>Producer Dashboard
+                    </button>
+                </div>
+                <div class="col-md-6 text-center">
+                    <button class="btn btn-custom btn-success" onclick="window.location.href='/buyer/dashboard'">
+                        <i class="fas fa-hand-holding-heart me-2"></i>Buyer Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            navbar.classList.toggle('navbar-scrolled', window.scrollY > 50);
+        });
+
+        // Login State Management
+        document.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userRole = localStorage.getItem('userRole');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginBtn = document.getElementById('loginBtn');
+
+    if (isLoggedIn) {
+      logoutBtn.classList.remove('d-none');
+      loginBtn.classList.add('d-none');
+      // You can also hide the register button if needed
+      document.querySelector("a[href='{{ url_for('signup') }}']").classList.add('d-none');
+    }
+
+    logoutBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userRole');
+      window.location.href = "{{ url_for('home') }}"; // Redirect to home
+    });
+  });
+
+        // Original Prediction Scripts
+        let allData = [];
+        async function fetchData() {
+            const res = await fetch("/api/predictions");
+            const data = await res.json();
+            allData = data;
+            populateDistricts(data);
+            populateTable(data);
+            const firstDistrict = data[0].District;
+            document.getElementById("districtSelect").value = firstDistrict;
+            updateChart(firstDistrict, "PET_Tons");
+        }
+
+        function populateDistricts(data) {
+            const uniqueDistricts = [...new Set(data.map(row => row.District))];
+            const districtSelect = document.getElementById("districtSelect");
+            districtSelect.innerHTML = '<option value="" disabled selected>-- Choose District --</option>';
+            uniqueDistricts.forEach(d => {
+                const option = document.createElement("option");
+                option.value = d;
+                option.textContent = d;
+                districtSelect.appendChild(option);
+            });
+        }
+
+        function updateChart(district, plasticType) {
+            const filtered = allData.filter(row => row.District === district);
+            const months = filtered.map(row => row.Month);
+            const values = filtered.map(row => parseFloat(row[plasticType]));
+
+            const ctx = document.getElementById("plasticChart").getContext("2d");
+            if (window.myChart) window.myChart.destroy();
+
+            window.myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: `${plasticType.replace("_Tons", "")} (Tons)`,
+                        data: values,
+                        backgroundColor: 'rgba(39, 174, 96, 0.7)',
+                        borderColor: 'rgba(39, 174, 96, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: true } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        function populateTable(data) {
+            const tbody = document.querySelector("#predictionsTable tbody");
+            tbody.innerHTML = "";
+            const sortedData = data.sort((a, b) => new Date(a.Month) - new Date(b.Month));
+            sortedData.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${row.Month}</td>
+                    <td>${row.District}</td>
+                    <td>${row.PET_Tons}</td>
+                    <td>${row.HDPE_Tons}</td>
+                    <td>${row.PVC_Tons}</td>
+                    <td>${row.LDPE_Tons}</td>
+                    <td>${row.PP_Tons}</td>
+                    <td>${row.PS_Tons}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if ($.fn.dataTable.isDataTable('#predictionsTable')) {
+                $('#predictionsTable').DataTable().clear().destroy();
+            }
+            $('#predictionsTable').DataTable({
+                dom: '<"top"fl>rt<"bottom"ip><"clear">',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search predictions..."
+                }
+            });
+        }
+
+        // Event Listeners
+        document.getElementById("districtSelect").addEventListener("change", () => {
+            const district = document.getElementById("districtSelect").value;
+            const plastic = document.getElementById("plasticTypeSelect").value;
+            if (district && plastic) updateChart(district, plastic);
+        });
+
+        document.getElementById("plasticTypeSelect").addEventListener("change", () => {
+            const district = document.getElementById("districtSelect").value;
+            const plastic = document.getElementById("plasticTypeSelect").value;
+            if (district && plastic) updateChart(district, plastic);
+        });
+
+        fetchData();
+    </script>
+</body>
+</html>
