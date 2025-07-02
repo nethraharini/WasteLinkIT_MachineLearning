@@ -1,5 +1,7 @@
 
+---
 
+```markdown
 # ♻️ WasteLinkIt — Smart Plastic Waste Management Platform
 
 **WasteLinkIt** is a full-stack, web-based machine learning application designed to revolutionize **plastic waste management** through **real-time trading** and **predictive analytics**.
@@ -40,6 +42,12 @@ The platform enables producers to **list** estimated/confirmed plastic waste, wh
 ---
 
 
+
+```
+
+
+
+````
 
 ---
 
@@ -147,9 +155,11 @@ The platform enables producers to **list** estimated/confirmed plastic waste, wh
 MIT License
 © 2025 Nethra Harini
 
-
 ---
 
+
+
+---
 
 
 
@@ -157,3 +167,4 @@ MIT License
 
 ---
 
+```
