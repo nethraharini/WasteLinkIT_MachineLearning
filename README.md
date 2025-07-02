@@ -1,9 +1,5 @@
-You got it, cupcake! 🧁✨
-Here’s a **professional, complete, and beautifully formatted `README.md`** for your **`WasteLinkIt`** project — with everything: overview, tech stack, features, setup instructions, and screenshots!
 
----
 
-```markdown
 # ♻️ WasteLinkIt — Smart Plastic Waste Management Platform
 
 **WasteLinkIt** is a full-stack, web-based machine learning application designed to revolutionize **plastic waste management** through **real-time trading** and **predictive analytics**.
@@ -43,22 +39,7 @@ The platform enables producers to **list** estimated/confirmed plastic waste, wh
 
 ---
 
-## 🏗️ Project Structure
 
-```
-
-WasteLinkIT\_MachineLearning/
-├── wastelinkit/
-│   ├── static/               # Static files: CSS, JS, images
-│   ├── templates/            # HTML templates
-│   ├── ml\_model/             # Trained TensorFlow LSTM model
-│   ├── app.py                # Flask backend
-│   ├── routes.py             # Flask route handlers
-│   └── utils.py              # Helper functions
-├── requirements.txt
-└── README.md
-
-````
 
 ---
 
