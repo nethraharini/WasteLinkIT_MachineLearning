@@ -1,31 +1,3 @@
-♻️ WasteLinkIt — Smart Plastic Waste Management Platform
-
-WasteLinkIt is a full-stack, web-based machine learning application designed to revolutionize plastic waste management through real-time trading and predictive analytics.
-
-🌍 Project Overview
-
-In an era of increasing plastic consumption, WasteLinkIt provides a structured and intelligent platform for plastic waste trading across districts in Tamil Nadu. It connects:
-
-Producers (recycling centers, manufacturers)
-
-Buyers (waste processors, recyclers)
-
-The platform enables producers to list estimated/confirmed plastic waste, while buyers can pre-book or book available waste. It integrates machine learning to forecast plastic waste generation, supporting a sustainable and circular economy model.
-
-💡 Key Features
-
-ML-Powered Forecasting of plastic waste (PET, HDPE, PVC, LDPE, PP, PS)
-
-Real-time Trading between producers and buyers
-
-District-Level Monthly Predictions
-
-Secure Sign-Up/Login
-
-Booking, History & Logistics Management
-
-
-
 
 ````markdown
 ♻️ WasteLinkIt — Smart Plastic Waste Management Platform
